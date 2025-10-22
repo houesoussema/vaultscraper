@@ -1,5 +1,5 @@
 import express from 'express';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import TurndownService from 'turndown';
 
 const app = express();
