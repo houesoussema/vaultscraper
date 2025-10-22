@@ -1,11 +1,11 @@
 
 # VaultScraper Obsidian Plugin
 
-**Version: 2.1.0**
+**Version: 2.2.0**
 
 An enhanced, powerful Obsidian plugin for performing advanced web scraping. It uses a backend server with a headless browser to handle JavaScript-rendered sites, manage authenticated sessions, and save clean, high-quality Markdown notes directly in your vault.
 
-This new version introduces an interactive workflow and superior content conversion for images and internal links.
+This new version introduces a status bar indicator for a more user-friendly experience.
 
 ---
 
@@ -17,6 +17,7 @@ This new version introduces an interactive workflow and superior content convers
 
 ## ✨ Features
 
+- **Server Status Indicator**: A status bar item in Obsidian shows whether the backend server is running ("Ready") or not ("Inactive").
 - **Interactive Scrape Command**: The primary way to use the plugin is via the "Start Interactive Scrape..." command, which opens a modal to input URLs and select a scrape mode on the fly.
 - **Intelligent Image Handling**: Images (`<img>` tags) are preserved in your notes using their original absolute URLs.
 - **Clean Internal Links**: Links between scraped pages are automatically cleaned and converted to absolute URLs.
@@ -47,14 +48,15 @@ This new version introduces an interactive workflow and superior content convers
 ## How to Use
 
 1.  **Start the backend server.**
-2.  **Primary Method: Interactive Scrape**
+2.  **Check the status bar in Obsidian.** It should say "Scraper: Ready" in green. If it says "Scraper: Inactive" in red, the backend server is not running.
+3.  **Primary Method: Interactive Scrape**
     - Open the Command Palette (`Ctrl/Cmd + P`).
     - Run the command **"Start Interactive Scrape..."**.
     - In the modal window:
         - Paste one or more URLs into the text area (one URL per line).
         - Select your desired "Scrape Mode".
         - Click "Start Scraping".
-3.  **Quick Action: Ribbon Icon**
+4.  **Quick Action: Ribbon Icon**
     - The spider icon in the left ribbon will start a **full recursive crawl** using the "Starting URL for Quick Crawl" saved in the plugin's settings.
 
 ## Development (Local Build)

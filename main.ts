@@ -3,12 +3,19 @@ import { App, Modal, Notice, Plugin, requestUrl, Setting } from 'obsidian';
 import { VaultScraperSettings, DEFAULT_SETTINGS, VaultScraperSettingTab } from './settings';
 
 type ScrapeMode = 'recursive' | 'single';
+type ServerStatus = 'ready' | 'inactive' | 'checking';
 
 export default class VaultScraper extends Plugin {
     settings: VaultScraperSettings;
+    statusBarItem: HTMLElement;
+    serverStatus: ServerStatus = 'checking';
+    pingInterval: number;
 
     async onload() {
         await this.loadSettings();
+
+        this.statusBarItem = this.addStatusBarItem();
+        this.updateStatusBar('checking');
 
         this.addRibbonIcon('spider', 'Start Quick Crawl', () => {
             if (!this.settings.startUrl) {
@@ -33,9 +40,16 @@ export default class VaultScraper extends Plugin {
         });
 
         this.addSettingTab(new VaultScraperSettingTab(this.app, this));
+
+        this.pingInterval = window.setInterval(() => this.checkServerStatus(), 5000);
+        this.checkServerStatus();
     }
 
-    onunload() {}
+    onunload() {
+        if (this.pingInterval) {
+            window.clearInterval(this.pingInterval);
+        }
+    }
 
     async loadSettings() {
         this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
@@ -45,7 +59,45 @@ export default class VaultScraper extends Plugin {
         await this.saveData(this.settings);
     }
 
+    private async checkServerStatus() {
+        try {
+            const response = await requestUrl({
+                url: 'http://localhost:3000/ping',
+                method: 'GET',
+            });
+            if (response.status === 200 && response.json.status === 'ok') {
+                this.updateStatusBar('ready');
+            } else {
+                this.updateStatusBar('inactive');
+            }
+        } catch (error) {
+            this.updateStatusBar('inactive');
+        }
+    }
+
+    private updateStatusBar(status: ServerStatus) {
+        this.serverStatus = status;
+        switch (status) {
+            case 'ready':
+                this.statusBarItem.setText('Scraper: Ready');
+                this.statusBarItem.style.color = 'green';
+                break;
+            case 'inactive':
+                this.statusBarItem.setText('Scraper: Inactive');
+                this.statusBarItem.style.color = 'red';
+                break;
+            case 'checking':
+                this.statusBarItem.setText('Scraper: Checking...');
+                this.statusBarItem.style.color = 'orange';
+                break;
+        }
+    }
+
     private async runScraper(urls: string[], mode: ScrapeMode) {
+        if (this.serverStatus !== 'ready') {
+            new Notice('Scraper server is not active. Please start the backend server to continue.', 10000);
+            return;
+        }
         new Notice('Sending scrape request to backend...');
 
         try {

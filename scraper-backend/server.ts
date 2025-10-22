@@ -1,11 +1,15 @@
 import express from 'express';
-import puppeteer from 'puppeteer';
+import * as puppeteer from 'puppeteer';
 import TurndownService from 'turndown';
 
 const app = express();
 app.use(express.json());
 
 const PORT = 3000;
+
+app.get('/ping', (req, res) => {
+    res.json({ status: 'ok' });
+});
 
 app.post('/scrape', async (req, res) => {
     const { urls, mode, storageStateJson, maxPages, targetFolder } = req.body;
