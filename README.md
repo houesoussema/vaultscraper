@@ -1,44 +1,43 @@
 
 # VaultScraper Obsidian Plugin
 
-**Version: 2.0.0**
+**Version: 2.1.0**
 
-An enhanced, powerful Obsidian plugin blueprint for performing advanced web scraping. It uses headless browser automation to handle JavaScript-rendered sites, manage authenticated sessions, and save clean, high-quality Markdown notes directly in your vault.
+An enhanced, powerful Obsidian plugin for performing advanced web scraping. It uses a backend server with a headless browser to handle JavaScript-rendered sites, manage authenticated sessions, and save clean, high-quality Markdown notes directly in your vault.
 
 This new version introduces an interactive workflow and superior content conversion for images and internal links.
 
 ---
 
-> **<font color="yellow">⚠️ ARCHITECTURAL BLUEPRINT: EXTERNAL NODE.JS REQUIRED</font>**
+> **<font color="yellow">⚠️ EXTERNAL NODE.JS SERVER REQUIRED</font>**
 >
-> This plugin **cannot run Puppeteer directly inside Obsidian**. Obsidian's environment is sandboxed and does not have the Node.js runtime needed to launch a headless browser.
->
-> This project serves as a **complete architectural blueprint** for a companion tool. To use it, you must:
-> 1.  Run the core scraping logic (from `main.ts`) in a **separate, standalone Node.js application**.
-> 2.  Use this Obsidian plugin as the **User Interface (UI)** to trigger and configure the external script.
+> This plugin requires a separate, standalone Node.js application to run the scraping logic. The Obsidian plugin provides the user interface, and the backend server handles the scraping.
 
 ---
 
-## ✨ New in Version 2.0
+## ✨ Features
 
 - **Interactive Scrape Command**: The primary way to use the plugin is via the "Start Interactive Scrape..." command, which opens a modal to input URLs and select a scrape mode on the fly.
-- **Intelligent Image Handling**: Images (`<img>` tags) are preserved in your notes using their original absolute URLs. No more broken image links.
-- **Clean Internal Links**: Links between scraped pages are automatically cleaned:
-    - Fragment identifiers (`#some-heading`) are removed to prevent broken links within Obsidian.
-    - All links are converted to absolute URLs for reliability.
-- **Flexible Scrape Modes**: For any set of URLs, choose to:
+- **Intelligent Image Handling**: Images (`<img>` tags) are preserved in your notes using their original absolute URLs.
+- **Clean Internal Links**: Links between scraped pages are automatically cleaned and converted to absolute URLs.
+- **Flexible Scrape Modes**:
     - **Full Website (Recursive)**: Crawl the entire site starting from the first URL.
     - **Single Page(s) Only**: Scrape only the specific URLs provided.
-
-## Core Features
-
-- **Recursive Crawling**: Starts at a URL and follows all same-domain links.
 - **Authenticated Sessions**: Scrapes content behind logins by injecting a Puppeteer storage state (cookies & localStorage).
-- **Smart Content Extraction**: Isolates content from `<article>` or `<main>` tags, stripping boilerplate for clean notes.
+- **Smart Content Extraction**: Isolates content from `<article>` or `<main>` tags.
 - **Robust HTML-to-Markdown**: Uses a customized Turndown service for high-quality Markdown conversion.
 - **Detailed Front Matter**: Each note includes YAML metadata: title, aliases, source URL, created date, and tags.
 
-## Installation (via BRAT)
+## Installation
+
+### Backend Server
+
+1.  Navigate to the `scraper-backend` directory.
+2.  Run `npm install` to install the dependencies.
+3.  Run `npm run build` to compile the TypeScript code.
+4.  Run `npm start` to start the server.
+
+### Obsidian Plugin (via BRAT)
 
 1.  **Install BRAT** from the community plugins list.
 2.  Run the command **BRAT: Add a beta plugin for testing**.
@@ -47,24 +46,31 @@ This new version introduces an interactive workflow and superior content convers
 
 ## How to Use
 
-1.  **Primary Method: Interactive Scrape**
+1.  **Start the backend server.**
+2.  **Primary Method: Interactive Scrape**
     - Open the Command Palette (`Ctrl/Cmd + P`).
     - Run the command **"Start Interactive Scrape..."**.
     - In the modal window:
         - Paste one or more URLs into the text area (one URL per line).
         - Select your desired "Scrape Mode".
         - Click "Start Scraping".
-2.  **Quick Action: Ribbon Icon**
+3.  **Quick Action: Ribbon Icon**
     - The spider icon in the left ribbon will start a **full recursive crawl** using the "Starting URL for Quick Crawl" saved in the plugin's settings.
 
 ## Development (Local Build)
 
-1.  Clone the repository.
-2.  Run `npm install` to install dependencies.
-3.  Run `npm run dev` to start the development server (watches for changes).
-4.  Run `npm run build` for a production build.
-5.  Copy `main.js`, `styles.css`, and `manifest.json` to your vault's `.obsidian/plugins/vault-scraper/` directory.
-6.  Reload Obsidian and enable the plugin.
+### Backend
+
+1.  `cd scraper-backend`
+2.  `npm install`
+3.  `npm run dev`
+
+### Plugin
+
+1.  `npm install`
+2.  `npm run dev`
+3.  Copy `main.js`, `styles.css`, and `manifest.json` to your vault's `.obsidian/plugins/vault-scraper/` directory.
+4.  Reload Obsidian and enable the plugin.
 
 ## Configuration
 
