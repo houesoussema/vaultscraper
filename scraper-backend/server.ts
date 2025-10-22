@@ -1,6 +1,7 @@
 import express from 'express';
 import * as puppeteer from 'puppeteer';
 import TurndownService from 'turndown';
+import sanitize from 'sanitize-filename';
 
 const app = express();
 app.use(express.json());
@@ -88,7 +89,7 @@ class Scraper {
     }
 
     private sanitizeFileName(name: string): string {
-        const sanitized = name.replace(/[\\/:*?"<>|]/g, ' ').replace(/\s+/g, ' ').trim();
+        const sanitized = sanitize(name);
         return sanitized.substring(0, 100) || 'Untitled';
     }
 
