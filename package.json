@@ -25,8 +25,5 @@
     "tslib": "2.5.0",
     "typescript": "5.0.4"
   },
-  "dependencies": {
-    "puppeteer": "^22.10.0",
-    "turndown": "^7.2.0"
-  }
+  "dependencies": {}
 }
