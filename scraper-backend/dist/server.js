@@ -48,9 +48,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const puppeteer = __importStar(require("puppeteer"));
 const turndown_1 = __importDefault(require("turndown"));
+const sanitize_filename_1 = __importDefault(require("sanitize-filename"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const PORT = 3000;
+app.get('/ping', (req, res) => {
+    res.json({ status: 'ok' });
+});
 app.post('/scrape', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { urls, mode, storageStateJson, maxPages, targetFolder } = req.body;
     if (!urls || !Array.isArray(urls) || urls.length === 0) {
@@ -120,7 +124,7 @@ class Scraper {
         });
     }
     sanitizeFileName(name) {
-        const sanitized = name.replace(/[\\/:*?"<>|]/g, ' ').replace(/\s+/g, ' ').trim();
+        const sanitized = (0, sanitize_filename_1.default)(name);
         return sanitized.substring(0, 100) || 'Untitled';
     }
     htmlToMarkdown(html) {
