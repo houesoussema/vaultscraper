@@ -1,6 +1,7 @@
 
 # Dependencies
 /node_modules
+scraper-backend/node_modules
 
 # Build artifacts
 main.js
