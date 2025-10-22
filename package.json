@@ -1,7 +1,7 @@
 
 {
   "name": "obsidian-vault-scraper",
-  "version": "2.0.0",
+  "version": "0.0.1",
   "description": "An enhanced Obsidian plugin to interactively scrape websites using Puppeteer.",
   "main": "main.js",
   "scripts": {
@@ -25,8 +25,5 @@
     "tslib": "2.5.0",
     "typescript": "5.0.4"
   },
-  "dependencies": {
-    "puppeteer": "^22.10.0",
-    "turndown": "^7.2.0"
-  }
+  "dependencies": {}
 }
