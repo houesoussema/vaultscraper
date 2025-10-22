@@ -1,0 +1,10 @@
+
+# Dependencies
+/node_modules
+
+# Build artifacts
+main.js
+styles.css
+
+# Obsidian vault specific
+.obsidian/

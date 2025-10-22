@@ -1,0 +1,11 @@
+
+{
+  "id": "vault-scraper",
+  "name": "VaultScraper",
+  "version": "2.0.0",
+  "minAppVersion": "1.1.0",
+  "description": "Interactively scrapes websites using headless automation and saves enhanced Markdown notes.",
+  "author": "Obsidian-Plugin-Engineer",
+  "authorUrl": "https://gemini.google.com",
+  "isDesktopOnly": true
+}
